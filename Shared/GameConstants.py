@@ -22,3 +22,5 @@ START_FONT = 'arial black'
 
 MAP_PIC = 'maze.png'
 MAP_DAT = 'walls.txt'
+
+PEOPLE_NUMBER = 1
