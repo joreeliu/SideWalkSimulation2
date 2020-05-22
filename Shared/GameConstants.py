@@ -2,12 +2,9 @@ import os
 
 # screen settings
 WIDTH, HEIGHT = 610, 670
-FPS = 60
+FPS = 1000
 TOP_BOTTOM_BUFFER = 50
 MAZE_WIDTH, MAZE_HEIGHT = WIDTH-TOP_BOTTOM_BUFFER, HEIGHT-TOP_BOTTOM_BUFFER
-
-ROWS = 30
-COLS = 28
 
 # colour settings
 BLACK = (0, 0, 0)
@@ -23,4 +20,4 @@ START_FONT = 'arial black'
 MAP_PIC = 'maze.png'
 MAP_DAT = 'walls.txt'
 
-PEOPLE_NUMBER = 6
+PEOPLE_NUMBER = 20

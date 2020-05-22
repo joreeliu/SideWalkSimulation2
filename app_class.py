@@ -5,10 +5,12 @@ from Shared import *
 from People import *
 import fileinput
 import random
+from Shared.Utilities import load_map
 
 
 pygame.init()
 vec = pygame.math.Vector2
+ROWS, COLS = load_map()
 
 
 class App:
@@ -22,8 +24,8 @@ class App:
         self.people = []
         self.e_pos = []
         self.load()
-        self.cell_width = MAZE_WIDTH // self.cols
-        self.cell_height = MAZE_HEIGHT // self.rows
+        self.cell_width = MAZE_WIDTH // COLS
+        self.cell_height = MAZE_HEIGHT // ROWS
         self.make_people()
 
     def start_events(self):
@@ -55,21 +57,15 @@ class App:
         self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
 
         pbirth_places = []
-        rows = 0
-        cols = 0
 
         with open(os.path.join("Assets", "levels", MAP_DAT), 'r') as file:
             for yidx, line in enumerate(file):
-                rows += 1
-                cols = 0
                 for xidx, char in enumerate(line):
-                    cols += 1
                     if char != "0":
                         self.walls.append(vec(xidx, yidx))
                     elif char == "0":
                         self.roads.append(vec(xidx, yidx))
                         pbirth_places.append(vec(xidx, yidx))
-        self.rows, self.cols = rows, cols
 
         self.e_pos = random.choices(pbirth_places, k=PEOPLE_NUMBER)
 

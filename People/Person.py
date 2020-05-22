@@ -2,6 +2,8 @@ from Shared import *
 import pygame
 import random
 vec = pygame.math.Vector2
+ROWS, COLS = load_map()
+
 
 class Person:
     def __init__(self, app, pos, number):

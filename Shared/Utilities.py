@@ -1,4 +1,6 @@
 import pygame
+import os
+from Shared.GameConstants import MAP_DAT
 
 
 def load_image(path, size):
@@ -6,13 +8,14 @@ def load_image(path, size):
 
 
 def load_map():
-    for line in fileinput.input(os.path.join("Assets", "Levels", "level" + str(level) + ".dat")):
-        for currentBlock in line:
-            if currentBlock == '1':
-                block = Block([x, y], load_image(GameConstants.SPRITE_BLOCK, GameConstants.BLOCK_SIZE), self)
-                self.__blocks.add(block)
+    rows = 0
+    cols = 0
 
-            x += GameConstants.BLOCK_SIZE[0]
+    with open(os.path.join("Assets", "levels", MAP_DAT), 'r') as file:
+        for yidx, line in enumerate(file):
+            rows += 1
+            cols = 0
+            for xidx, char in enumerate(line):
+                cols += 1
 
-        x = 0
-        y += GameConstants.BLOCK_SIZE[1]
+    return rows, cols
