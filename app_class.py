@@ -1,6 +1,8 @@
 import pygame
 import sys
+import numpy as np
 import copy
+import cv2
 from Shared import *
 from People import *
 import fileinput
@@ -10,22 +12,27 @@ from Shared.Utilities import load_map
 
 pygame.init()
 vec = pygame.math.Vector2
-ROWS, COLS = load_map()
+
 
 
 class App:
     def __init__(self):
-        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        self.clock = pygame.time.Clock()
-        self.running = True
-        self.state = 'start'
         self.walls = []
         self.roads = []
         self.people = []
         self.e_pos = []
+
         self.load()
-        self.cell_width = MAZE_WIDTH // COLS
-        self.cell_height = MAZE_HEIGHT // ROWS
+
+
+        self.screen = pygame.display.set_mode((self.map_width, self.map_height))
+        self.clock = pygame.time.Clock()
+        self.running = True
+        self.state = 'start'
+
+
+        self.cell_width = 1
+        self.cell_height = 1
         self.make_people()
 
     def start_events(self):
@@ -40,7 +47,7 @@ class App:
     def start_draw(self):
         self.screen.fill(BLACK)
         self.draw_text('PUSH SPACE BAR', self.screen, [
-                       WIDTH//2, HEIGHT//2-50], START_TEXT_SIZE, (170, 132, 58), START_FONT, centered=True)
+                       self.map_width//2, self.map_height//2-50], START_TEXT_SIZE, (170, 132, 58), START_FONT, centered=True)
         pygame.display.update()
 
     def draw_text(self, words, screen, pos, size, colour, font_name, centered=False):
@@ -54,16 +61,22 @@ class App:
 
     def load(self):
         self.background = pygame.image.load(os.path.join("Assets", MAP_PIC))
-        self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
+        img = cv2.imread(os.path.join("Assets", MAP_PIC), 0)
+        self.map_width = img.shape[1]
+        self.map_height = img.shape[0]
+        img[img != 0] = 1
+        np.savetxt(os.path.join("Assets", "levels", MAP_DAT), img, '%d', '')
+
+        ##self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
 
         pbirth_places = []
 
         with open(os.path.join("Assets", "levels", MAP_DAT), 'r') as file:
             for yidx, line in enumerate(file):
                 for xidx, char in enumerate(line):
-                    if char != "0":
+                    if char == "0":
                         self.walls.append(vec(xidx, yidx))
-                    elif char == "0":
+                    elif char != "0":
                         self.roads.append(vec(xidx, yidx))
                         pbirth_places.append(vec(xidx, yidx))
 
@@ -105,9 +118,9 @@ class App:
 
     def draw_walls(self):
         for wall in self.walls:
-            pygame.draw.circle(self.screen, (124, 0, 7),
-                               (int(wall.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
-                                int(wall.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 5)
+            pygame.draw.rect(self.background, (122, 55, 163),
+                               (wall.x*self.cell_width, wall.y*self.cell_height, self.cell_width,self.cell_height))
+
 
     def make_people(self):
         for idx, pos in enumerate(self.e_pos):
@@ -116,8 +129,8 @@ class App:
     def playing_draw(self):
         self.screen.fill(BLACK)
         self.screen.blit(self.background, (TOP_BOTTOM_BUFFER//2, TOP_BOTTOM_BUFFER//2))
-        self.draw_roads()
-        self.draw_walls()
+       # self.draw_roads()
+        #self.draw_walls()
 
         for person in self.people:
             person.draw()

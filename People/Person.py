@@ -12,7 +12,7 @@ class Person:
         self.grid_pos = pos
         self.starting_pos = [pos.x, pos.y]
         self.pix_pos = self.get_pix_pos()
-        self.radius = int(self.app.cell_width // 2.3)
+        self.radius = self.app.cell_width
         self.number = number
         self.colour = self.set_colour()
         self.direction = vec(0, 0)
