@@ -17,13 +17,13 @@ class App:
         self.clock = pygame.time.Clock()
         self.running = True
         self.state = 'start'
-        self.cell_width = MAZE_WIDTH//COLS
-        self.cell_height = MAZE_HEIGHT//ROWS
         self.walls = []
         self.roads = []
         self.people = []
         self.e_pos = []
         self.load()
+        self.cell_width = MAZE_WIDTH // self.cols
+        self.cell_height = MAZE_HEIGHT // self.rows
         self.make_people()
 
     def start_events(self):
@@ -55,15 +55,21 @@ class App:
         self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
 
         pbirth_places = []
+        rows = 0
+        cols = 0
+
         with open(os.path.join("Assets", "levels", MAP_DAT), 'r') as file:
             for yidx, line in enumerate(file):
+                rows += 1
+                cols = 0
                 for xidx, char in enumerate(line):
-                    if char == "1":
+                    cols += 1
+                    if char != "0":
                         self.walls.append(vec(xidx, yidx))
                     elif char == "0":
                         self.roads.append(vec(xidx, yidx))
-                    else:
                         pbirth_places.append(vec(xidx, yidx))
+        self.rows, self.cols = rows, cols
 
         self.e_pos = random.choices(pbirth_places, k=PEOPLE_NUMBER)
 
@@ -101,6 +107,12 @@ class App:
                                (int(road.x*self.cell_width)+self.cell_width//2+TOP_BOTTOM_BUFFER//2,
                                 int(road.y*self.cell_height)+self.cell_height//2+TOP_BOTTOM_BUFFER//2), 5)
 
+    def draw_walls(self):
+        for wall in self.walls:
+            pygame.draw.circle(self.screen, (124, 0, 7),
+                               (int(wall.x * self.cell_width) + self.cell_width // 2 + TOP_BOTTOM_BUFFER // 2,
+                                int(wall.y * self.cell_height) + self.cell_height // 2 + TOP_BOTTOM_BUFFER // 2), 5)
+
     def make_people(self):
         for idx, pos in enumerate(self.e_pos):
             self.people.append(Person(self, pos, 2))
@@ -109,11 +121,11 @@ class App:
         self.screen.fill(BLACK)
         self.screen.blit(self.background, (TOP_BOTTOM_BUFFER//2, TOP_BOTTOM_BUFFER//2))
         self.draw_roads()
+        self.draw_walls()
 
-        '''
         for person in self.people:
             person.draw()
-        '''
+
         pygame.display.update()
 
     def reset(self):
