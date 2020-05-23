@@ -12,7 +12,7 @@ class Person:
         self.grid_pos = pos
         self.starting_pos = [pos.x, pos.y]
         self.pix_pos = self.get_pix_pos()
-        self.radius = self.app.cell_width
+        self.radius = self.app.cell_width*2
         self.number = number
         self.colour = self.set_colour()
         self.direction = vec(0, 0)
@@ -76,7 +76,7 @@ class Person:
         while True:
             x_dir, y_dir = random.choice([(1, 0), (0, 1), (-1, 0), (0, -1)])
 
-            next_pos = vec(self.grid_pos.x + x_dir, self.grid_pos.y + y_dir)
+            next_pos = vec(self.grid_pos.x + 2*x_dir, self.grid_pos.y + 2*y_dir)
             if next_pos not in self.app.walls:
                 break
         return vec(x_dir, y_dir)

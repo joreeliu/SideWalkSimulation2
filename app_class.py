@@ -119,7 +119,7 @@ class App:
     def draw_walls(self):
         for wall in self.walls:
             pygame.draw.rect(self.background, (122, 55, 163),
-                               (wall.x*self.cell_width, wall.y*self.cell_height, self.cell_width,self.cell_height))
+                                (wall.x*self.cell_width, wall.y*self.cell_height, self.cell_width,self.cell_height))
 
 
     def make_people(self):
@@ -130,7 +130,7 @@ class App:
         self.screen.fill(BLACK)
         self.screen.blit(self.background, (TOP_BOTTOM_BUFFER//2, TOP_BOTTOM_BUFFER//2))
        # self.draw_roads()
-        #self.draw_walls()
+        self.draw_walls()
 
         for person in self.people:
             person.draw()

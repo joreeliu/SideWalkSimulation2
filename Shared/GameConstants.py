@@ -17,7 +17,7 @@ PLAYER_COLOUR = (190, 194, 15)
 START_TEXT_SIZE = 16
 START_FONT = 'arial black'
 
-MAP_PIC = 'grid.png'
+MAP_PIC = 'ny.jpg'
 MAP_DAT = 'walls.txt'
 
-PEOPLE_NUMBER = 100
+PEOPLE_NUMBER = 10
