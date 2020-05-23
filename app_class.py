@@ -62,10 +62,13 @@ class App:
     def load(self):
         self.background = pygame.image.load(os.path.join("Assets", MAP_PIC))
         img = cv2.imread(os.path.join("Assets", MAP_PIC), 0)
+        gaussian_blur_img = cv2.GaussianBlur(img, (5, 5), 0)
+        cv2.imwrite('gaussian_blur_img.jpg', gaussian_blur_img)
+
         self.map_width = img.shape[1]
         self.map_height = img.shape[0]
-        img[img != 0] = 1
-        np.savetxt(os.path.join("Assets", "levels", MAP_DAT), img, '%d', '')
+        gaussian_blur_img[gaussian_blur_img != 0] = 1
+        np.savetxt(os.path.join("Assets", "levels", MAP_DAT),  gaussian_blur_img, '%d', '')
 
         ##self.background = pygame.transform.scale(self.background, (MAZE_WIDTH, MAZE_HEIGHT))
 

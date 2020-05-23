@@ -20,4 +20,4 @@ START_FONT = 'arial black'
 MAP_PIC = 'ny.jpg'
 MAP_DAT = 'walls.txt'
 
-PEOPLE_NUMBER = 10
+PEOPLE_NUMBER = 60
